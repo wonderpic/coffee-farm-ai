@@ -13,6 +13,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+function getSchedule(age) {
+  if (age < 6) return ["Penyiraman rutin", "Naungan & kelembapan"];
+  if (age < 24) return ["Pemupukan NPK", "Penyiangan gulma"];
+  return ["Pemangkasan produksi", "Monitoring hama", "Pemupukan rutin"];
+}
+
 document.getElementById("status").innerText = "Firebase Ready ✔";
 
 window.saveFarm = async function () {
@@ -29,6 +35,34 @@ window.saveFarm = async function () {
 };
 
 async function loadData() {
+  const snap = await db.collection("farms").get();
+
+  let html = `<h2>📊 Dashboard Kebun</h2>`;
+
+  snap.forEach(doc => {
+    const data = doc.data();
+
+    html += `
+      <div style="
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 15px;
+        margin: 10px 0;
+        background: #f9f9f9;
+      ">
+        <h3>🌿 ${data.name}</h3>
+        <p>📅 Umur: <b>${data.age || 0}</b> bulan</p>
+
+        <p>🧠 Jadwal Perawatan:</p>
+        <ul>
+          ${(getSchedule(data.age || 0)).map(item => `<li>${item}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  });
+
+  document.getElementById("list").innerHTML = html;
+}
   const snap = await db.collection("farms").get();
 
   let html = "";

@@ -20,6 +20,7 @@ document.body.innerHTML += `
   <hr>
   <h3>🌱 Tambah Kebun</h3>
   <input id="farmName" placeholder="Nama Kebun">
+  <input id="farmAge" placeholder="Umur (bulan)">
   <button id="saveBtn">Simpan</button>
 
   <h3>📊 Daftar Kebun</h3>

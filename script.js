@@ -34,8 +34,10 @@ document.addEventListener("click", async (e) => {
     if (!name) return alert("Isi nama kebun dulu");
 
     await addDoc(collection(db, "farms"), {
-      name: name,
-      created: new Date()
+  name: name,
+  age: Number(age),
+  created: new Date()
+});
     });
 
     document.getElementById("farmName").value = "";

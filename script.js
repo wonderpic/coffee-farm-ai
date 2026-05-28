@@ -1,7 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-console.log("SCRIPT + FIREBASE LOADING");
+console.log("APP START");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAo0zYNRGCa-XaNZgqTijz0P6uz_76pKGQ",
@@ -12,28 +9,16 @@ const firebaseConfig = {
   appId: "1:450326520755:web:19e3ed232f919adf6aa1c6"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// UI dulu (jangan kompleks)
-document.body.innerHTML = `
-  <h1>☕ Coffee Farm AI</h1>
-
-  <p id="status">Firebase connecting...</p>
-
-  <input id="farmName" placeholder="Nama Kebun">
-  <button id="saveBtn">Simpan</button>
-
-  <div id="list"></div>
-`;
+// INIT FIREBASE (compat version)
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 document.getElementById("status").innerText = "Firebase Ready ✔";
 
-// SAVE DATA
-document.getElementById("saveBtn").onclick = async () => {
+window.saveFarm = async function () {
   const name = document.getElementById("farmName").value;
 
-  await addDoc(collection(db, "farms"), {
+  await db.collection("farms").add({
     name: name,
     created: new Date()
   });
@@ -41,9 +26,8 @@ document.getElementById("saveBtn").onclick = async () => {
   loadData();
 };
 
-// LOAD DATA
 async function loadData() {
-  const snap = await getDocs(collection(db, "farms"));
+  const snap = await db.collection("farms").get();
 
   let html = "";
 

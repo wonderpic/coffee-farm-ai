@@ -1,36 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Coffee Farm AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  ☕ Coffee Farm AI Dashboard
-</header>
+  <h1>Coffee Farm AI</h1>
 
-<div class="container">
+  <p id="status">Loading...</p>
 
-  <div class="cards">
-    <div class="card">🟢<br>Sehat<br><b>12</b></div>
-    <div class="card">🟡<br>Waspada<br><b>3</b></div>
-    <div class="card">🔴<br>Kritis<br><b>1</b></div>
-  </div>
-
-  <h3>🤖 AI Leaf Scan</h3>
-
-  <input type="file" id="imageInput">
-
-  <button onclick="analyze()">Analisa Daun</button>
-
-  <div id="result" class="result"></div>
-
-</div>
-
-<script type="module" src="script.js"></script>
+  <script type="module" src="script.js"></script>
 
 </body>
 </html>

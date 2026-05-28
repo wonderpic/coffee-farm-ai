@@ -2,16 +2,24 @@
 <html>
 <head>
   <title>Coffee Farm AI</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <h1>Coffee Farm AI</h1>
+<h1>☕ Coffee Farm AI</h1>
 
-  <p id="status">Loading...</p>
+<p id="status">Loading...</p>
 
- <script type="module" src="script.js"></script>
+<input id="farmName" placeholder="Nama Kebun">
+<button onclick="saveFarm()">Simpan</button>
+
+<div id="list"></div>
+
+<!-- Firebase CDN (BUKAN MODULE) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="script.js"></script>
 
 </body>
 </html>

@@ -19,8 +19,10 @@ window.saveFarm = async function () {
   const name = document.getElementById("farmName").value;
 
   await db.collection("farms").add({
-    name: name,
-    created: new Date()
+  name: name,
+  age: 12,
+  created: new Date()
+});
   });
 
   loadData();

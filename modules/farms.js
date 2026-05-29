@@ -1,73 +1,140 @@
 window.saveFarm = async function(){
 
-  const data = {
+  try{
 
-    name:
-      document.getElementById("farmName").value,
+    // ======================
+    // INPUT
+    // ======================
 
-    coffeeType:
-      document.getElementById("coffeeType").value,
+    const plantingDate =
+      document.getElementById("plantingDate").value;
 
-    altitude:
-      Number(document.getElementById("altitude").value),
+    // ======================
+    // HITUNG UMUR
+    // ======================
 
-    age:
-      Number(document.getElementById("farmAge").value),
+    const today =
+      new Date();
 
-    treeCount:
-      Number(document.getElementById("treeCount").value),
+    const planted =
+      new Date(plantingDate);
 
-    fertilizer:
-      document.getElementById("fertilizer").value,
+    const diffTime =
+      today - planted;
 
-    season:
-      document.getElementById("season").value,
+    const age =
+      Math.floor(
+        diffTime /
+        (1000 * 60 * 60 * 24 * 30)
+      );
 
-    tasks:{
-      fertilizing:false,
-      pruning:false,
-      pest:false,
-      watering:false
-    },
+    // ======================
+    // DATA
+    // ======================
 
-    created:
-      new Date()
+    const data = {
 
-  };
+      name:
+        document.getElementById("farmName").value,
 
-  await db.collection("farms").add(data);
+      coffeeType:
+        document.getElementById("coffeeType").value,
 
-  clearForm();
+      altitude:
+        Number(
+          document.getElementById("altitude").value
+        ),
 
-  loadDashboard();
+      treeCount:
+        Number(
+          document.getElementById("treeCount").value
+        ),
+
+      plantingDate:
+        plantingDate,
+
+      age:
+        age,
+
+      fertilizer:
+        document.getElementById("fertilizer").value,
+
+      season:
+        document.getElementById("season").value,
+
+      tasks:{
+        fertilizing:false,
+        pruning:false,
+        pest:false,
+        watering:false
+      },
+
+      created:
+        new Date()
+
+    };
+
+    // ======================
+    // SAVE
+    // ======================
+
+    await db
+      .collection("farms")
+      .add(data);
+
+    // ======================
+    // CLEAR
+    // ======================
+
+    clearForm();
+
+    // ======================
+    // RELOAD
+    // ======================
+
+    loadDashboard();
+
+  }catch(err){
+
+    console.error(err);
+
+    alert(
+      "Gagal menyimpan data kebun"
+    );
+  }
+
 };
 
 // ======================
 // CLEAR FORM
 // ======================
+
 function clearForm(){
 
   document.getElementById("farmName").value = "";
 
   document.getElementById("altitude").value = "";
 
-  document.getElementById("farmAge").value = "";
-
   document.getElementById("treeCount").value = "";
+
+  document.getElementById("plantingDate").value = "";
 
 }
 
 // ======================
 // UPDATE TASK
 // ======================
+
 window.updateTask =
 async function(id,task,value){
 
-  await db.collection("farms")
+  await db
+    .collection("farms")
     .doc(id)
     .update({
 
-      [`tasks.${task}`]:value
+      [`tasks.${task}`]:
+        value
 
     });
 
@@ -75,35 +142,36 @@ async function(id,task,value){
 };
 
 // ======================
-// EDIT FARM
+// EDIT
 // ======================
+
 window.editFarm =
 async function(id){
 
   const name =
     prompt("Nama Kebun Baru:");
 
-  const age =
-    prompt("Umur Baru:");
-
-  const altitude =
-    prompt("Ketinggian Baru:");
-
-  const fertilizer =
-    prompt("Jenis Pupuk Baru:");
-
   const season =
     prompt("Musim Baru:");
 
-  await db.collection("farms")
+  const fertilizer =
+    prompt("Pupuk Baru:");
+
+  if(!name) return;
+
+  await db
+    .collection("farms")
     .doc(id)
     .update({
 
-      name:name,
-      age:Number(age),
-      altitude:Number(altitude),
-      fertilizer:fertilizer,
-      season:season
+      name:
+        name,
+
+      season:
+        season,
+
+      fertilizer:
+        fertilizer
 
     });
 
@@ -111,19 +179,21 @@ async function(id){
 };
 
 // ======================
-// DELETE FARM
+// DELETE
 // ======================
+
 window.deleteFarm =
 async function(id){
 
   const ok =
     confirm(
-      "Hapus data kebun ini?"
+      "Hapus kebun ini?"
     );
 
   if(!ok) return;
 
-  await db.collection("farms")
+  await db
+    .collection("farms")
     .doc(id)
     .delete();
 

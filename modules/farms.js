@@ -30,23 +30,69 @@ window.saveFarm = async function(){
 
   await db.collection("farms").add(data);
 
+  clearForm();
+
   loadDashboard();
 };
 
+// ======================
+// CLEAR FORM
+// ======================
+function clearForm(){
+
+  document.getElementById("farmName").value = "";
+  document.getElementById("altitude").value = "";
+  document.getElementById("farmAge").value = "";
+  document.getElementById("treeCount").value = "";
+
+}
+
+// ======================
+// EDIT FULL DATA
+// ======================
 window.editFarm = async function(id){
 
-  const newSeason =
-    prompt("Update musim:");
+  const name =
+    prompt("Nama Kebun Baru:");
 
-  if(!newSeason) return;
+  const age =
+    prompt("Umur Tanaman Baru:");
+
+  const season =
+    prompt("Musim Baru:");
+
+  const fertilizer =
+    prompt("Jenis Pupuk Baru:");
+
+  if(!name) return;
 
   await db.collection("farms")
     .doc(id)
     .update({
 
-      season:newSeason
+      name:name,
+      age:Number(age),
+      season:season,
+      fertilizer:fertilizer
 
     });
 
   loadDashboard();
-}
+};
+
+// ======================
+// DELETE FARM
+// ======================
+window.deleteFarm = async function(id){
+
+  const confirmDelete =
+    confirm("Hapus data kebun ini?");
+
+  if(!confirmDelete) return;
+
+  await db.collection("farms")
+    .doc(id)
+    .delete();
+
+  loadDashboard();
+};

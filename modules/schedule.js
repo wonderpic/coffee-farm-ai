@@ -1,4 +1,4 @@
-function generateSchedule(data){
+window.generateSchedule = function(data){
 
   const today =
     new Date();
@@ -102,4 +102,5 @@ function generateSchedule(data){
   });
 
   return schedules;
+
 }

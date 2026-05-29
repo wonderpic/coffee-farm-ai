@@ -1,3 +1,9 @@
-console.log("Coffee Farm AI PRO");
+window.onload = function(){
 
-loadDashboard();
+  console.log(
+    "Coffee Farm AI Loaded"
+  );
+
+  loadDashboard();
+
+};

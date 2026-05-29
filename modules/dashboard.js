@@ -3,7 +3,9 @@ async function loadDashboard(){
   const snap =
     await db.collection("farms").get();
 
-  let html = "";
+  let html = `
+    <div class="dashboard-grid">
+  `;
 
   snap.forEach(doc => {
 
@@ -17,31 +19,36 @@ async function loadDashboard(){
         🌿 ${data.name}
       </div>
 
-      <div class="info-grid">
+      <div class="info-list">
 
         <div class="info-item">
-          ☕ Jenis:
+          ☕ Jenis Kopi:
           <b>${data.coffeeType}</b>
         </div>
 
         <div class="info-item">
-          ⛰️ ${data.altitude} mdpl
+          ⛰️ Ketinggian:
+          <b>${data.altitude} mdpl</b>
         </div>
 
         <div class="info-item">
-          🌱 ${data.treeCount} pohon
+          🌱 Jumlah Pohon:
+          <b>${data.treeCount}</b>
         </div>
 
         <div class="info-item">
-          📅 ${data.age} bulan
+          📅 Umur:
+          <b>${data.age} bulan</b>
         </div>
 
         <div class="info-item">
-          🧪 ${data.fertilizer}
+          🧪 Pupuk:
+          <b>${data.fertilizer}</b>
         </div>
 
         <div class="info-item">
-          🌦️ ${data.season}
+          🌦️ Musim:
+          <b>${data.season}</b>
         </div>
 
       </div>
@@ -54,27 +61,26 @@ async function loadDashboard(){
 
         <ul>
 
-        ${getSchedule(data.age)
-          .map(item =>
-            `<li>${item}</li>`
-          ).join("")}
+          ${getSchedule(data.age)
+            .map(item =>
+              `<li>${item}</li>`
+            ).join("")}
 
         </ul>
 
       </div>
-
-      <div>
 
       ${getReminders(data.age)
         .map(item =>
           `<div class="warning">${item}</div>`
         ).join("")}
 
-      </div>
-
       <div class="action-buttons">
 
-        <button onclick="editFarm('${doc.id}')">
+        <button
+          class="edit-btn"
+          onclick="editFarm('${doc.id}')"
+        >
           ✏️ Edit
         </button>
 
@@ -91,6 +97,8 @@ async function loadDashboard(){
 
     `;
   });
+
+  html += `</div>`;
 
   document.getElementById("dashboard").innerHTML =
     html;

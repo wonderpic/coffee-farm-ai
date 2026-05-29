@@ -11,6 +11,19 @@ async function loadDashboard(){
 
     const data = doc.data();
 
+    const tasks = data.tasks || {
+
+      fertilizing:false,
+      pruning:false,
+      pest:false,
+      watering:false
+
+    };
+
+    const unfinished =
+      Object.values(tasks)
+        .filter(v => !v).length;
+
     html += `
 
     <div class="farm-card">
@@ -70,10 +83,105 @@ async function loadDashboard(){
 
       </div>
 
-      ${getReminders(data.age)
-        .map(item =>
-          `<div class="warning">${item}</div>`
-        ).join("")}
+      <div class="schedule-box">
+
+        <h3>
+          ✅ Checklist Perawatan
+        </h3>
+
+        <label>
+          <input
+            type="checkbox"
+            ${tasks.fertilizing ? "checked" : ""}
+            onchange="
+              updateTask(
+                '${doc.id}',
+                'fertilizing',
+                this.checked
+              )
+            "
+          >
+          Pemupukan
+        </label>
+
+        <br><br>
+
+        <label>
+          <input
+            type="checkbox"
+            ${tasks.pruning ? "checked" : ""}
+            onchange="
+              updateTask(
+                '${doc.id}',
+                'pruning',
+                this.checked
+              )
+            "
+          >
+          Pruning
+        </label>
+
+        <br><br>
+
+        <label>
+          <input
+            type="checkbox"
+            ${tasks.pest ? "checked" : ""}
+            onchange="
+              updateTask(
+                '${doc.id}',
+                'pest',
+                this.checked
+              )
+            "
+          >
+          Monitoring Hama
+        </label>
+
+        <br><br>
+
+        <label>
+          <input
+            type="checkbox"
+            ${tasks.watering ? "checked" : ""}
+            onchange="
+              updateTask(
+                '${doc.id}',
+                'watering',
+                this.checked
+              )
+            "
+          >
+          Penyiraman
+        </label>
+
+      </div>
+
+      ${
+        unfinished > 0
+        ?
+        `
+        <div class="warning">
+
+          🚨 ${unfinished}
+          pekerjaan belum selesai
+
+        </div>
+        `
+        :
+        `
+        <div class="warning"
+          style="
+            background:#d1e7dd;
+            color:#0f5132;
+          "
+        >
+
+          ✅ Semua pekerjaan selesai
+
+        </div>
+        `
+      }
 
       <div class="action-buttons">
 

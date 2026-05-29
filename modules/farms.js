@@ -23,6 +23,13 @@ window.saveFarm = async function(){
     season:
       document.getElementById("season").value,
 
+    tasks:{
+      fertilizing:false,
+      pruning:false,
+      pest:false,
+      watering:false
+    },
+
     created:
       new Date()
 
@@ -41,30 +48,52 @@ window.saveFarm = async function(){
 function clearForm(){
 
   document.getElementById("farmName").value = "";
+
   document.getElementById("altitude").value = "";
+
   document.getElementById("farmAge").value = "";
+
   document.getElementById("treeCount").value = "";
 
 }
 
 // ======================
-// EDIT FULL DATA
+// UPDATE TASK
 // ======================
-window.editFarm = async function(id){
+window.updateTask =
+async function(id,task,value){
+
+  await db.collection("farms")
+    .doc(id)
+    .update({
+
+      [`tasks.${task}`]:value
+
+    });
+
+  loadDashboard();
+};
+
+// ======================
+// EDIT FARM
+// ======================
+window.editFarm =
+async function(id){
 
   const name =
     prompt("Nama Kebun Baru:");
 
   const age =
-    prompt("Umur Tanaman Baru:");
+    prompt("Umur Baru:");
 
-  const season =
-    prompt("Musim Baru:");
+  const altitude =
+    prompt("Ketinggian Baru:");
 
   const fertilizer =
     prompt("Jenis Pupuk Baru:");
 
-  if(!name) return;
+  const season =
+    prompt("Musim Baru:");
 
   await db.collection("farms")
     .doc(id)
@@ -72,8 +101,9 @@ window.editFarm = async function(id){
 
       name:name,
       age:Number(age),
-      season:season,
-      fertilizer:fertilizer
+      altitude:Number(altitude),
+      fertilizer:fertilizer,
+      season:season
 
     });
 
@@ -83,12 +113,15 @@ window.editFarm = async function(id){
 // ======================
 // DELETE FARM
 // ======================
-window.deleteFarm = async function(id){
+window.deleteFarm =
+async function(id){
 
-  const confirmDelete =
-    confirm("Hapus data kebun ini?");
+  const ok =
+    confirm(
+      "Hapus data kebun ini?"
+    );
 
-  if(!confirmDelete) return;
+  if(!ok) return;
 
   await db.collection("farms")
     .doc(id)

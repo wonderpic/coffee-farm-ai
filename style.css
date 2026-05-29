@@ -1,1 +1,160 @@
+*{
+  box-sizing:border-box;
+}
 
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f1eb;
+  color:#2D4739;
+}
+
+.container{
+  width:100%;
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  width:220px;
+  max-width:80%;
+  margin:auto;
+  display:block;
+}
+
+.header h1{
+  margin:10px 0 5px;
+  font-size:40px;
+}
+
+.header p{
+  color:#666;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:25px;
+  margin-bottom:25px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+input,
+select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:15px;
+  background:white;
+}
+
+button{
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#2D6A4F;
+  color:white;
+  cursor:pointer;
+  font-size:15px;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.save-btn{
+  width:100%;
+  margin-top:15px;
+}
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.farm-card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  border-top:8px solid #2D6A4F;
+}
+
+.farm-title{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.info-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.info-item{
+  background:#f8f8f8;
+  padding:12px;
+  border-radius:10px;
+}
+
+.schedule-box{
+  margin-top:20px;
+  background:#f4fff5;
+  padding:15px;
+  border-radius:14px;
+}
+
+.warning{
+  margin-top:10px;
+  background:#fff3cd;
+  padding:12px;
+  border-radius:12px;
+  color:#856404;
+}
+
+.action-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.edit-btn{
+  flex:1;
+  background:#2D6A4F;
+}
+
+.delete-btn{
+  flex:1;
+  background:#b02a37;
+}
+
+@media(max-width:900px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+
+  .header h1{
+    font-size:30px;
+  }
+
+}

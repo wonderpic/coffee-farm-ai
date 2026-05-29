@@ -2,360 +2,87 @@
 <html lang="id">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Talaga Hangsa - Coffee Farm AI</title>
+  <title>Talaga Hangsa - Coffee Farm AI</title>
 
-<style>
-
-body{
-  font-family:Arial,sans-serif;
-  background:#f3f1eb;
-  margin:0;
-  padding:20px;
-  color:#2D4739;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-}
-
-.logo{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-.logo img{
-  width:220px;
-  max-width:80%;
-}
-
-h1{
-  text-align:center;
-  margin-bottom:5px;
-}
-
-.subtitle{
-  text-align:center;
-  color:#666;
-  margin-bottom:25px;
-}
-
-.card{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-input,select{
-  padding:12px;
-  border:1px solid #ccc;
-  border-radius:10px;
-  width:100%;
-  box-sizing:border-box;
-}
-
-button{
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#2D6A4F;
-  color:white;
-  width:100%;
-  margin-top:15px;
-  cursor:pointer;
-  font-size:16px;
-}
-
-.farm-card{
-  border:1px solid #ddd;
-  border-radius:16px;
-  padding:18px;
-  margin-top:15px;
-  background:#fafafa;
-}
-
-.farm-title{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-ul{
-  padding-left:20px;
-}
-
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="logo">
-<img src="logo.png" alt="Talaga Hangsa">
-</div>
+  <div class="header">
 
-<h1>☕ Coffee Farm AI</h1>
+    <img src="logo.png" class="logo">
 
-<p class="subtitle">
-Smart Coffee Farm Management System
-</p>
+    <h1>Coffee Farm AI</h1>
 
-<div class="card">
+    <p>
+      Smart Coffee Farm Management System
+    </p>
 
-<h2>🌱 Data Kebun</h2>
+  </div>
 
-<div class="grid">
+  <div class="card">
 
-<input id="farmName" placeholder="Nama Kebun">
+    <h2>🌱 Tambah Kebun</h2>
 
-<select id="coffeeType">
-<option>Arabika</option>
-<option>Robusta</option>
-<option>Liberika</option>
-</select>
+    <div class="grid">
 
-<input id="altitude" type="number" placeholder="Ketinggian (mdpl)">
+      <input id="farmName" placeholder="Nama Kebun">
 
-<input id="landArea" type="number" placeholder="Luas Lahan (m²)">
+      <select id="coffeeType">
+        <option>Arabika</option>
+        <option>Robusta</option>
+        <option>Liberika</option>
+      </select>
 
-<input id="treeCount" type="number" placeholder="Jumlah Pohon">
+      <input id="altitude" type="number" placeholder="Ketinggian mdpl">
 
-<input id="farmAge" type="number" placeholder="Umur Tanaman (bulan)">
+      <input id="farmAge" type="number" placeholder="Umur tanaman (bulan)">
 
-<select id="fertilizer">
-<option>Organik</option>
-<option>Kimia</option>
-<option>Kombinasi</option>
-</select>
+      <input id="treeCount" type="number" placeholder="Jumlah pohon">
 
-<select id="season">
-<option>Musim Hujan</option>
-<option>Musim Kemarau</option>
-</select>
+      <select id="fertilizer">
+        <option>Organik</option>
+        <option>Kimia</option>
+        <option>Kombinasi</option>
+      </select>
 
-</div>
+      <select id="season">
+        <option>Musim Hujan</option>
+        <option>Musim Kemarau</option>
+      </select>
 
-<button onclick="saveFarm()">
-Simpan Data Kebun
-</button>
+    </div>
 
-</div>
+    <button onclick="saveFarm()">
+      Simpan Kebun
+    </button>
 
-<div class="card">
+  </div>
 
-<h2>📊 Dashboard Kebun</h2>
-
-<div id="list"></div>
-
-</div>
+  <div id="dashboard"></div>
 
 </div>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<script>
+<!-- MODULES -->
+<script src="firebase.js"></script>
+<script src="modules/schedule.js"></script>
+<script src="modules/reminders.js"></script>
+<script src="modules/dashboard.js"></script>
+<script src="modules/farms.js"></script>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAo0zYNRGCa-XaNZgqTijz0P6uz_76pKGQ",
-  authDomain: "coffee-farm-ai.firebaseapp.com",
-  projectId: "coffee-farm-ai",
-  storageBucket: "coffee-farm-ai.firebasestorage.app",
-  messagingSenderId: "450326520755",
-  appId: "1:450326520755:web:19e3ed232f919adf6aa1c6"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
-// =====================
-// STATUS
-// =====================
-function getStatus(age){
-
-  if(age < 6){
-    return "🌱 Bibit";
-  }
-
-  if(age < 24){
-    return "🌿 Produktif Awal";
-  }
-
-  return "☕ Produktif";
-}
-
-// =====================
-// REKOMENDASI
-// =====================
-function getSchedule(age, fertilizer){
-
-  let result = [];
-
-  if(age < 6){
-
-    result.push("Penyiraman rutin");
-    result.push("Kontrol naungan");
-
-  }else if(age < 24){
-
-    result.push("Pemupukan vegetatif");
-    result.push("Penyiangan gulma");
-
-  }else{
-
-    result.push("Pemangkasan produksi");
-    result.push("Monitoring hama");
-
-  }
-
-  if(fertilizer === "Organik"){
-    result.push("Fermentasi kompos rutin");
-  }
-
-  if(fertilizer === "Kimia"){
-    result.push("Kontrol dosis NPK");
-  }
-
-  return result;
-}
-
-// =====================
-// SAVE FARM
-// =====================
-async function saveFarm(){
-
-  const data = {
-
-    name:
-      document.getElementById("farmName").value,
-
-    coffeeType:
-      document.getElementById("coffeeType").value,
-
-    altitude:
-      Number(document.getElementById("altitude").value),
-
-    landArea:
-      Number(document.getElementById("landArea").value),
-
-    treeCount:
-      Number(document.getElementById("treeCount").value),
-
-    age:
-      Number(document.getElementById("farmAge").value),
-
-    fertilizer:
-      document.getElementById("fertilizer").value,
-
-    season:
-      document.getElementById("season").value,
-
-    created:
-      new Date()
-
-  };
-
-  await db.collection("farms").add(data);
-
-  loadData();
-}
-
-// =====================
-// LOAD DASHBOARD
-// =====================
-async function loadData(){
-
-  const snap =
-    await db.collection("farms").get();
-
-  let html = "";
-
-  snap.forEach(doc => {
-
-    const data = doc.data();
-
-    html += `
-
-    <div class="farm-card">
-
-      <div class="farm-title">
-        🌿 ${data.name}
-      </div>
-
-      <p>
-        ☕ Jenis:
-        <b>${data.coffeeType}</b>
-      </p>
-
-      <p>
-        ⛰️ Ketinggian:
-        <b>${data.altitude} mdpl</b>
-      </p>
-
-      <p>
-        🌱 Jumlah Pohon:
-        <b>${data.treeCount}</b>
-      </p>
-
-      <p>
-        📅 Umur:
-        <b>${data.age} bulan</b>
-      </p>
-
-      <p>
-        📌 Status:
-        <b>${getStatus(data.age)}</b>
-      </p>
-
-      <p>
-        🧪 Pupuk:
-        <b>${data.fertilizer}</b>
-      </p>
-
-      <p>
-        🌦️ Musim:
-        <b>${data.season}</b>
-      </p>
-
-      <p>
-        🧠 Rekomendasi:
-      </p>
-
-      <ul>
-
-      ${getSchedule(data.age,data.fertilizer)
-        .map(item => `<li>${item}</li>`)
-        .join("")}
-
-      </ul>
-
-    </div>
-
-    `;
-
-  });
-
-  document.getElementById("list").innerHTML =
-    html;
-}
-
-loadData();
-
-</script>
+<!-- APP -->
+<script src="app.js"></script>
 
 </body>
 </html>

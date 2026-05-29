@@ -13,58 +13,79 @@ async function loadDashboard(){
 
     <div class="farm-card">
 
-      <h2>
+      <div class="farm-title">
         🌿 ${data.name}
-      </h2>
+      </div>
 
-      <p>
-        ☕ ${data.coffeeType}
-      </p>
+      <div class="info-grid">
 
-      <p>
-        ⛰️ ${data.altitude} mdpl
-      </p>
+        <div class="info-item">
+          ☕ Jenis:
+          <b>${data.coffeeType}</b>
+        </div>
 
-      <p>
-        🌱 ${data.treeCount} pohon
-      </p>
+        <div class="info-item">
+          ⛰️ ${data.altitude} mdpl
+        </div>
 
-      <p>
-        📅 ${data.age} bulan
-      </p>
+        <div class="info-item">
+          🌱 ${data.treeCount} pohon
+        </div>
 
-      <p>
-        🧪 ${data.fertilizer}
-      </p>
+        <div class="info-item">
+          📅 ${data.age} bulan
+        </div>
 
-      <p>
-        🌦️ ${data.season}
-      </p>
+        <div class="info-item">
+          🧪 ${data.fertilizer}
+        </div>
 
-      <h3>
-        🧠 Jadwal Rekomendasi
-      </h3>
+        <div class="info-item">
+          🌦️ ${data.season}
+        </div>
 
-      <ul>
+      </div>
 
-      ${getSchedule(data.age)
-        .map(item => `<li>${item}</li>`)
-        .join("")}
+      <div class="schedule-box">
 
-      </ul>
+        <h3>
+          🧠 Jadwal Rekomendasi
+        </h3>
 
-      <h3>
-        🚨 Reminder
-      </h3>
+        <ul>
+
+        ${getSchedule(data.age)
+          .map(item =>
+            `<li>${item}</li>`
+          ).join("")}
+
+        </ul>
+
+      </div>
+
+      <div>
 
       ${getReminders(data.age)
         .map(item =>
           `<div class="warning">${item}</div>`
         ).join("")}
 
-      <button onclick="editFarm('${doc.id}')">
-        Edit Data Kebun
-      </button>
+      </div>
+
+      <div class="action-buttons">
+
+        <button onclick="editFarm('${doc.id}')">
+          ✏️ Edit
+        </button>
+
+        <button
+          class="delete-btn"
+          onclick="deleteFarm('${doc.id}')"
+        >
+          🗑️ Hapus
+        </button>
+
+      </div>
 
     </div>
 

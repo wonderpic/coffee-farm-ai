@@ -3,7 +3,7 @@ function getAIRecommendation(data){
   let result = [];
 
   // ======================
-  // VARIETAS VS MDPL
+  // ARABIKA
   // ======================
 
   if(
@@ -13,9 +13,13 @@ function getAIRecommendation(data){
   ){
 
     result.push(
-      "⚠️ Arabika biasanya optimal di atas 1000 mdpl"
+      "⚠️ Arabika ideal di atas 1000 mdpl menurut pedoman Puslitkoka"
     );
   }
+
+  // ======================
+  // ROBUSTA
+  // ======================
 
   if(
     data.coffeeType === "Robusta"
@@ -24,25 +28,25 @@ function getAIRecommendation(data){
   ){
 
     result.push(
-      "⚠️ Robusta kurang optimal di mdpl terlalu tinggi"
+      "⚠️ Robusta kurang optimal pada mdpl terlalu tinggi"
     );
   }
 
   // ======================
-  // UMUR TANAMAN
+  // UMUR
   // ======================
 
   if(data.age < 12){
 
     result.push(
-      "🌱 Fokus pertumbuhan vegetatif dan pembentukan akar"
+      "🌱 Fokus pembentukan akar dan pertumbuhan vegetatif"
     );
   }
 
   if(data.age >= 12){
 
     result.push(
-      "☕ Mulai monitoring pembentukan cabang produksi"
+      "☕ Monitoring cabang produksi mulai diperlukan"
     );
   }
 
@@ -53,18 +57,18 @@ function getAIRecommendation(data){
   if(data.season === "Musim Hujan"){
 
     result.push(
-      "🌧️ Hindari pemupukan saat hujan terlalu deras"
+      "🌧️ Waspadai jamur daun dan kelembapan berlebih"
     );
 
     result.push(
-      "🦠 Waspadai jamur dan kelembapan berlebih"
+      "🧪 Hindari pemupukan saat hujan terlalu deras"
     );
   }
 
   if(data.season === "Musim Kemarau"){
 
     result.push(
-      "💧 Prioritaskan kelembapan tanah dan mulsa"
+      "💧 Gunakan mulsa untuk menjaga kelembapan tanah"
     );
   }
 
@@ -82,18 +86,18 @@ function getAIRecommendation(data){
   if(data.fertilizer === "Kimia"){
 
     result.push(
-      "🧪 Pastikan dosis NPK tidak berlebihan"
+      "🧪 Kontrol dosis NPK agar tidak over-fertilizing"
     );
   }
 
   // ======================
-  // JUMLAH POHON
+  // KEPADATAN
   // ======================
 
   if(data.treeCount > 1000){
 
     result.push(
-      "🌿 Monitoring hama perlu lebih rutin pada kebun padat"
+      "🌿 Kebun padat memerlukan monitoring hama lebih rutin"
     );
   }
 

@@ -20,10 +20,6 @@ async function loadDashboard(){
 
     };
 
-    const unfinished =
-      Object.values(tasks)
-        .filter(v => !v).length;
-
     html += `
 
     <div class="farm-card">
@@ -50,6 +46,8 @@ async function loadDashboard(){
 
       </div>
 
+      <!-- INFO -->
+
       <div class="info-list">
 
         <div class="info-item">
@@ -74,7 +72,8 @@ async function loadDashboard(){
 
       </div>
 
-      <!-- AI RECOMMENDATION -->
+      <!-- AI -->
+
       <div class="schedule-box">
 
         <h3>
@@ -92,11 +91,31 @@ async function loadDashboard(){
 
       </div>
 
-      <!-- TASK -->
+      <!-- AUTO SCHEDULE -->
+
       <div class="schedule-box">
 
         <h3>
-          ✅ Checklist Perawatan
+          📅 Jadwal Perawatan Otomatis
+        </h3>
+
+        <ul>
+
+          ${getSchedule(data)
+            .map(item =>
+              `<li>${item}</li>`
+            ).join("")}
+
+        </ul>
+
+      </div>
+
+      <!-- TASK -->
+
+      <div class="schedule-box">
+
+        <h3>
+          ✅ Checklist Pekerjaan
         </h3>
 
         <div class="task-list">
@@ -177,21 +196,14 @@ async function loadDashboard(){
 
       </div>
 
-      ${
-        unfinished > 0
-        ?
-        `
-        <div class="warning">
-          🚨 ${unfinished} pekerjaan belum selesai
-        </div>
-        `
-        :
-        `
-        <div class="success">
-          ✅ Semua pekerjaan selesai
-        </div>
-        `
-      }
+      <!-- WARNING -->
+
+      ${getReminders(data)
+        .map(item =>
+          `<div class="warning">${item}</div>`
+        ).join("")}
+
+      <!-- ACTION -->
 
       <div class="action-buttons">
 

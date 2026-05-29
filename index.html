@@ -1,26 +1,336 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Coffee Farm AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Talaga Hangsa - Coffee Farm AI</title>
+
+  <style>
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f3f1eb;
+      margin:0;
+      padding:20px;
+      color:#2D4739;
+    }
+
+    .container{
+      max-width:700px;
+      margin:auto;
+    }
+
+    .logo{
+      text-align:center;
+      margin-top:20px;
+      margin-bottom:10px;
+    }
+
+    .logo img{
+      width:220px;
+      max-width:80%;
+      display:block;
+      margin:auto;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:5px;
+      color:#1B4332;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#555;
+      margin-bottom:20px;
+    }
+
+    .status{
+      text-align:center;
+      margin-bottom:20px;
+      color:#2D6A4F;
+      font-weight:bold;
+    }
+
+    .card{
+      background:white;
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      box-sizing:border-box;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      margin-top:15px;
+      border:none;
+      border-radius:12px;
+      background:#2D6A4F;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+    }
+
+    button:hover{
+      opacity:0.9;
+    }
+
+    .farm-card{
+      background:#ffffff;
+      border-radius:16px;
+      padding:18px;
+      margin-top:15px;
+      border:1px solid #e5e5e5;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .farm-title{
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:10px;
+    }
+
+    ul{
+      padding-left:20px;
+    }
+
+    li{
+      margin-bottom:6px;
+    }
+
+  </style>
 </head>
 
 <body>
 
-<h1>☕ Coffee Farm AI</h1>
+<div class="container">
 
-<p id="status">Loading...</p>
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="logo.png" alt="Talaga Hangsa Logo">
+  </div>
 
-<input id="farmName" placeholder="Nama Kebun">
-<input id="farmAge" placeholder="Umur (bulan)">
-<button onclick="saveFarm()">Simpan</button>
+  <h1>Coffee Farm AI</h1>
 
-<div id="list"></div>
+  <p class="subtitle">
+    Smart Coffee Farm Management System
+  </p>
 
-<!-- Firebase CDN (BUKAN MODULE) -->
+  <p id="status" class="status">
+    Loading...
+  </p>
+
+  <!-- INPUT -->
+  <div class="card">
+
+    <h2>🌱 Tambah Kebun</h2>
+
+    <input
+      id="farmName"
+      placeholder="Nama Kebun"
+    >
+
+    <input
+      id="farmAge"
+      type="number"
+      placeholder="Umur Kebun (bulan)"
+    >
+
+    <button onclick="saveFarm()">
+      Simpan Kebun
+    </button>
+
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="card">
+
+    <h2>📊 Dashboard Kebun</h2>
+
+    <div id="list"></div>
+
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<script src="script.js"></script>
+<!-- APP SCRIPT -->
+<script>
+
+console.log("Coffee Farm AI START");
+
+// ==========================
+// FIREBASE CONFIG
+// ==========================
+const firebaseConfig = {
+  apiKey: "AIzaSyAo0zYNRGCa-XaNZgqTijz0P6uz_76pKGQ",
+  authDomain: "coffee-farm-ai.firebaseapp.com",
+  projectId: "coffee-farm-ai",
+  storageBucket: "coffee-farm-ai.firebasestorage.app",
+  messagingSenderId: "450326520755",
+  appId: "1:450326520755:web:19e3ed232f919adf6aa1c6"
+};
+
+// INIT FIREBASE
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+// STATUS
+document.getElementById("status").innerText =
+  "☕ Coffee Farm AI Ready ✔";
+
+// ==========================
+// STATUS KEBUN
+// ==========================
+function getStatus(age) {
+
+  if (age < 6) {
+    return "🌱 Bibit (Perlu perawatan intensif)";
+  }
+
+  if (age < 24) {
+    return "🌿 Produktif awal (stabil)";
+  }
+
+  return "☕ Produktif (monitoring rutin)";
+}
+
+// ==========================
+// JADWAL PERAWATAN
+// ==========================
+function getSchedule(age) {
+
+  if (age < 6) {
+    return [
+      "Penyiraman rutin",
+      "Kontrol kelembapan",
+      "Naungan tanaman"
+    ];
+  }
+
+  if (age < 24) {
+    return [
+      "Pemupukan NPK",
+      "Penyiangan gulma",
+      "Monitoring daun"
+    ];
+  }
+
+  return [
+    "Pemangkasan produksi",
+    "Monitoring hama",
+    "Pemupukan rutin",
+    "Kontrol buah kopi"
+  ];
+}
+
+// ==========================
+// SAVE FARM
+// ==========================
+window.saveFarm = async function () {
+
+  const name =
+    document.getElementById("farmName").value;
+
+  const age =
+    Number(document.getElementById("farmAge").value);
+
+  if (!name) {
+
+    alert("Masukkan nama kebun");
+
+    return;
+  }
+
+  await db.collection("farms").add({
+
+    name: name,
+    age: age,
+    created: new Date()
+
+  });
+
+  document.getElementById("farmName").value = "";
+  document.getElementById("farmAge").value = "";
+
+  loadData();
+};
+
+// ==========================
+// LOAD DASHBOARD
+// ==========================
+async function loadData() {
+
+  const snap =
+    await db.collection("farms").get();
+
+  let html = "";
+
+  snap.forEach(doc => {
+
+    const data = doc.data();
+
+    html += `
+
+      <div class="farm-card">
+
+        <div class="farm-title">
+          🌿 ${data.name}
+        </div>
+
+        <p>
+          📅 Umur:
+          <b>${data.age || 0}</b> bulan
+        </p>
+
+        <p>
+          📌 Status:
+          <b>${getStatus(data.age || 0)}</b>
+        </p>
+
+        <p>
+          🧠 Jadwal Perawatan:
+        </p>
+
+        <ul>
+
+          ${getSchedule(data.age || 0)
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+
+        </ul>
+
+      </div>
+
+    `;
+  });
+
+  document.getElementById("list").innerHTML =
+    html;
+}
+
+// LOAD APP
+loadData();
+
+</script>
 
 </body>
 </html>

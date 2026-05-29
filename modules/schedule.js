@@ -1,26 +1,126 @@
-function getSchedule(age){
+function getSchedule(data){
 
-  if(age < 6){
+  let result = [];
 
-    return [
-      "Penyiraman rutin",
-      "Kontrol naungan",
-      "Pemupukan awal"
-    ];
+  // ======================
+  // TANAMAN MUDA
+  // ======================
+
+  if(data.age < 12){
+
+    result.push(
+      "🌱 Penyiraman rutin 2–3 kali per minggu"
+    );
+
+    result.push(
+      "🌿 Kontrol gulma di sekitar batang"
+    );
+
+    result.push(
+      "🧪 Pemupukan vegetatif dosis ringan"
+    );
+
   }
 
-  if(age < 24){
+  // ======================
+  // TANAMAN PRODUKTIF AWAL
+  // ======================
 
-    return [
-      "Pemupukan vegetatif",
-      "Penyiangan gulma",
-      "Monitoring daun"
-    ];
+  if(
+    data.age >= 12
+    &&
+    data.age < 36
+  ){
+
+    result.push(
+      "✂️ Pruning cabang air setiap bulan"
+    );
+
+    result.push(
+      "🧪 Pemupukan NPK berkala"
+    );
+
+    result.push(
+      "🦠 Monitoring jamur daun"
+    );
+
   }
 
-  return [
-    "Pemangkasan produksi",
-    "Monitoring hama",
-    "Pemupukan rutin"
-  ];
+  // ======================
+  // TANAMAN PRODUKTIF
+  // ======================
+
+  if(data.age >= 36){
+
+    result.push(
+      "☕ Monitoring pembentukan buah"
+    );
+
+    result.push(
+      "✂️ Pemangkasan produksi"
+    );
+
+    result.push(
+      "🧪 Pemupukan produksi"
+    );
+
+  }
+
+  // ======================
+  // MUSIM HUJAN
+  // ======================
+
+  if(data.season === "Musim Hujan"){
+
+    result.push(
+      "🌧️ Kurangi pemupukan saat hujan deras"
+    );
+
+    result.push(
+      "🦠 Waspadai karat daun dan jamur"
+    );
+
+  }
+
+  // ======================
+  // MUSIM KEMARAU
+  // ======================
+
+  if(data.season === "Musim Kemarau"){
+
+    result.push(
+      "💧 Gunakan mulsa untuk menjaga kelembapan"
+    );
+
+    result.push(
+      "🌱 Prioritaskan penyiraman bibit"
+    );
+
+  }
+
+  // ======================
+  // ARABIKA
+  // ======================
+
+  if(data.coffeeType === "Arabika"){
+
+    result.push(
+      "⛰️ Arabika optimal pada suhu dingin dan lembap"
+    );
+
+  }
+
+  // ======================
+  // ROBUSTA
+  // ======================
+
+  if(data.coffeeType === "Robusta"){
+
+    result.push(
+      "☀️ Robusta lebih tahan suhu panas"
+    );
+
+  }
+
+  return result;
 }

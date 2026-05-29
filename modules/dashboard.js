@@ -28,53 +28,62 @@ async function loadDashboard(){
 
     <div class="farm-card">
 
-      <div class="farm-title">
-        🌿 ${data.name}
+      <div class="farm-top">
+
+        <div>
+
+          <div class="farm-title">
+            🌿 ${data.name}
+          </div>
+
+          <div class="farm-subtitle">
+            ${data.coffeeType}
+          </div>
+
+        </div>
+
+        <div class="farm-badge">
+
+          ${data.age} bulan
+
+        </div>
+
       </div>
 
       <div class="info-list">
 
         <div class="info-item">
-          ☕ Jenis Kopi:
-          <b>${data.coffeeType}</b>
-        </div>
-
-        <div class="info-item">
-          ⛰️ Ketinggian:
+          <span>⛰️ Ketinggian</span>
           <b>${data.altitude} mdpl</b>
         </div>
 
         <div class="info-item">
-          🌱 Jumlah Pohon:
+          <span>🌱 Jumlah Pohon</span>
           <b>${data.treeCount}</b>
         </div>
 
         <div class="info-item">
-          📅 Umur:
-          <b>${data.age} bulan</b>
-        </div>
-
-        <div class="info-item">
-          🧪 Pupuk:
+          <span>🧪 Pupuk</span>
           <b>${data.fertilizer}</b>
         </div>
 
         <div class="info-item">
-          🌦️ Musim:
+          <span>🌦️ Musim</span>
           <b>${data.season}</b>
         </div>
 
       </div>
 
+      <!-- AI RECOMMENDATION -->
       <div class="schedule-box">
 
         <h3>
-          🧠 Jadwal Rekomendasi
+          🤖 AI Recommendation
         </h3>
 
         <ul>
 
-          ${getSchedule(data.age)
+          ${getAIRecommendation(data)
             .map(item =>
               `<li>${item}</li>`
             ).join("")}
@@ -83,77 +92,88 @@ async function loadDashboard(){
 
       </div>
 
+      <!-- TASK -->
       <div class="schedule-box">
 
         <h3>
           ✅ Checklist Perawatan
         </h3>
 
-        <label>
-          <input
-            type="checkbox"
-            ${tasks.fertilizing ? "checked" : ""}
-            onchange="
-              updateTask(
-                '${doc.id}',
-                'fertilizing',
-                this.checked
-              )
-            "
-          >
-          Pemupukan
-        </label>
+        <div class="task-list">
 
-        <br><br>
+          <label class="task-item">
 
-        <label>
-          <input
-            type="checkbox"
-            ${tasks.pruning ? "checked" : ""}
-            onchange="
-              updateTask(
-                '${doc.id}',
-                'pruning',
-                this.checked
-              )
-            "
-          >
-          Pruning
-        </label>
+            <input
+              type="checkbox"
+              ${tasks.fertilizing ? "checked" : ""}
+              onchange="
+                updateTask(
+                  '${doc.id}',
+                  'fertilizing',
+                  this.checked
+                )
+              "
+            >
 
-        <br><br>
+            Pemupukan
 
-        <label>
-          <input
-            type="checkbox"
-            ${tasks.pest ? "checked" : ""}
-            onchange="
-              updateTask(
-                '${doc.id}',
-                'pest',
-                this.checked
-              )
-            "
-          >
-          Monitoring Hama
-        </label>
+          </label>
 
-        <br><br>
+          <label class="task-item">
 
-        <label>
-          <input
-            type="checkbox"
-            ${tasks.watering ? "checked" : ""}
-            onchange="
-              updateTask(
-                '${doc.id}',
-                'watering',
-                this.checked
-              )
-            "
-          >
-          Penyiraman
-        </label>
+            <input
+              type="checkbox"
+              ${tasks.pruning ? "checked" : ""}
+              onchange="
+                updateTask(
+                  '${doc.id}',
+                  'pruning',
+                  this.checked
+                )
+              "
+            >
+
+            Pruning
+
+          </label>
+
+          <label class="task-item">
+
+            <input
+              type="checkbox"
+              ${tasks.pest ? "checked" : ""}
+              onchange="
+                updateTask(
+                  '${doc.id}',
+                  'pest',
+                  this.checked
+                )
+              "
+            >
+
+            Monitoring Hama
+
+          </label>
+
+          <label class="task-item">
+
+            <input
+              type="checkbox"
+              ${tasks.watering ? "checked" : ""}
+              onchange="
+                updateTask(
+                  '${doc.id}',
+                  'watering',
+                  this.checked
+                )
+              "
+            >
+
+            Penyiraman
+
+          </label>
+
+        </div>
 
       </div>
 
@@ -162,23 +182,13 @@ async function loadDashboard(){
         ?
         `
         <div class="warning">
-
-          🚨 ${unfinished}
-          pekerjaan belum selesai
-
+          🚨 ${unfinished} pekerjaan belum selesai
         </div>
         `
         :
         `
-        <div class="warning"
-          style="
-            background:#d1e7dd;
-            color:#0f5132;
-          "
-        >
-
+        <div class="success">
           ✅ Semua pekerjaan selesai
-
         </div>
         `
       }

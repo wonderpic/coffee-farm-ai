@@ -1,17 +1,46 @@
-function getReminders(age){
+function getReminders(data){
 
   let reminders = [];
 
-  if(age > 12){
+  // ======================
+  // UMUR
+  // ======================
+
+  if(data.age > 12){
+
     reminders.push(
       "🚨 Monitoring hama minggu ini belum dilakukan"
     );
   }
 
-  if(age > 6){
+  // ======================
+  // MUSIM
+  // ======================
+
+  if(data.season === "Musim Hujan"){
+
     reminders.push(
-      "🚨 Jadwal pemupukan mendekat"
+      "⚠️ Risiko jamur meningkat pada musim hujan"
     );
+  }
+
+  // ======================
+  // CHECKLIST
+  // ======================
+
+  if(data.tasks){
+
+    const unfinished =
+      Object.values(data.tasks)
+        .filter(v => !v).length;
+
+    if(unfinished > 0){
+
+      reminders.push(
+        `🚨 ${unfinished} tugas kebun belum selesai`
+      );
+    }
+
   }
 
   return reminders;

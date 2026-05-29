@@ -11,9 +11,6 @@ async function loadDashboard(){
     const data =
       doc.data();
 
-    const tasks =
-      data.tasks || {};
-
     html += `
 
     <div class="farm-card">
@@ -80,18 +77,6 @@ async function loadDashboard(){
 
         </div>
 
-        <div class="info-item">
-
-          <span>
-            🧪 Pupuk
-          </span>
-
-          <b>
-            ${data.fertilizer}
-          </b>
-
-        </div>
-
       </div>
 
       <!-- AI -->
@@ -121,86 +106,77 @@ async function loadDashboard(){
           📅 Jadwal Perawatan
         </h3>
 
-        <ul>
-
-          ${getSchedule(data)
-            .map(item =>
-              `<li>${item}</li>`
-            ).join("")}
-
-        </ul>
-
-      </div>
-
-      <!-- TASK -->
-
-      <div class="schedule-box">
-
-        <h3>
-          ✅ Checklist
-        </h3>
-
         <div class="task-list">
 
-          <label class="task-item">
+          ${data.schedules
+            .map((item,index)=>{
 
-            <input
-              type="checkbox"
-
-              ${tasks.fertilizing ? "checked" : ""}
-
-              onchange="
-                updateTask(
-                  '${doc.id}',
-                  'fertilizing',
-                  this.checked
+              const overdue =
+                (
+                  new Date(item.date)
+                  <
+                  new Date()
                 )
-              "
-            >
+                &&
+                !item.done;
 
-            Pemupukan
+              return `
 
-          </label>
+              <div class="
+                schedule-item
+                ${overdue ? 'overdue' : ''}
+              ">
 
-          <label class="task-item">
+                <label class="task-item">
 
-            <input
-              type="checkbox"
+                  <input
+                    type="checkbox"
 
-              ${tasks.pruning ? "checked" : ""}
+                    ${item.done ? 'checked' : ''}
 
-              onchange="
-                updateTask(
-                  '${doc.id}',
-                  'pruning',
-                  this.checked
-                )
-              "
-            >
+                    onchange="
+                      toggleSchedule(
+                        '${doc.id}',
+                        ${index},
+                        this.checked
+                      )
+                    "
+                  >
 
-            Pruning
+                  <div>
 
-          </label>
+                    <b>
+                      ${item.type}
+                    </b>
 
-          <label class="task-item">
+                    <br>
 
-            <input
-              type="checkbox"
+                    📅 ${item.date}
 
-              ${tasks.pest ? "checked" : ""}
+                  </div>
 
-              onchange="
-                updateTask(
-                  '${doc.id}',
-                  'pest',
-                  this.checked
-                )
-              "
-            >
+                </label>
 
-            Monitoring Hama
+                ${
+                  overdue
+                  ?
+                  `
+                  <div class="warning">
 
-          </label>
+                    🚨 Jadwal terlewat
+
+                  </div>
+                  `
+                  :
+                  ''
+                }
+
+              </div>
+
+              `;
+
+            }).join("")
+          }
 
         </div>
 

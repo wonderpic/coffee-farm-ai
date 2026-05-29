@@ -2,16 +2,8 @@ window.saveFarm = async function(){
 
   try{
 
-    // ======================
-    // INPUT
-    // ======================
-
     const plantingDate =
       document.getElementById("plantingDate").value;
-
-    // ======================
-    // HITUNG UMUR
-    // ======================
 
     const today =
       new Date();
@@ -27,10 +19,6 @@ window.saveFarm = async function(){
         diffTime /
         (1000 * 60 * 60 * 24 * 30)
       );
-
-    // ======================
-    // DATA
-    // ======================
 
     const data = {
 
@@ -62,35 +50,23 @@ window.saveFarm = async function(){
       season:
         document.getElementById("season").value,
 
-      tasks:{
-        fertilizing:false,
-        pruning:false,
-        pest:false,
-        watering:false
-      },
+      schedules:
+        generateSchedule({
+
+          age:age
+
+        }),
 
       created:
         new Date()
 
     };
 
-    // ======================
-    // SAVE
-    // ======================
-
     await db
       .collection("farms")
       .add(data);
 
-    // ======================
-    // CLEAR
-    // ======================
-
     clearForm();
-
-    // ======================
-    // RELOAD
-    // ======================
 
     loadDashboard();
 
@@ -99,14 +75,15 @@ window.saveFarm = async function(){
     console.error(err);
 
     alert(
-      "Gagal menyimpan data kebun"
+      "Gagal menyimpan kebun"
     );
+
   }
 
 };
 
 // ======================
-// CLEAR FORM
+// CLEAR
 // ======================
 
 function clearForm(){
@@ -122,21 +99,33 @@ function clearForm(){
 }
 
 // ======================
-// UPDATE TASK
+// UPDATE SCHEDULE
 // ======================
 
-window.updateTask =
-async function(id,task,value){
+window.toggleSchedule =
+async function(id,index,value){
 
-  await db
-    .collection("farms")
-    .doc(id)
-    .update({
+  const ref =
+    db.collection("farms")
+      .doc(id);
 
-      [`tasks.${task}`]:
-        value
+  const doc =
+    await ref.get();
 
-    });
+  const data =
+    doc.data();
+
+  const schedules =
+    data.schedules;
+
+  schedules[index].done =
+    value;
+
+  await ref.update({
+
+    schedules:schedules
+
+  });
 
   loadDashboard();
 };
@@ -149,13 +138,9 @@ window.editFarm =
 async function(id){
 
   const name =
-    prompt("Nama Kebun Baru:");
-
-  const season =
-    prompt("Musim Baru:");
-
-  const fertilizer =
-    prompt("Pupuk Baru:");
+    prompt(
+      "Nama Kebun Baru:"
+    );
 
   if(!name) return;
 
@@ -164,14 +149,7 @@ async function(id){
     .doc(id)
     .update({
 
-      name:
-        name,
-
-      season:
-        season,
-
-      fertilizer:
-        fertilizer
+      name:name
 
     });
 

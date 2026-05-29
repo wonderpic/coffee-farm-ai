@@ -1,126 +1,105 @@
-function getSchedule(data){
+function generateSchedule(data){
 
-  let result = [];
+  const today =
+    new Date();
 
-  // ======================
-  // TANAMAN MUDA
-  // ======================
-
-  if(data.age < 12){
-
-    result.push(
-      "🌱 Penyiraman rutin 2–3 kali per minggu"
-    );
-
-    result.push(
-      "🌿 Kontrol gulma di sekitar batang"
-    );
-
-    result.push(
-      "🧪 Pemupukan vegetatif dosis ringan"
-    );
-
-  }
+  const schedules = [];
 
   // ======================
-  // TANAMAN PRODUKTIF AWAL
+  // PEMUPUKAN
   // ======================
 
-  if(
-    data.age >= 12
-    &&
-    data.age < 36
-  ){
+  const fertilizing =
+    new Date(today);
 
-    result.push(
-      "✂️ Pruning cabang air setiap bulan"
-    );
+  fertilizing.setDate(
+    fertilizing.getDate() + 7
+  );
 
-    result.push(
-      "🧪 Pemupukan NPK berkala"
-    );
+  schedules.push({
 
-    result.push(
-      "🦠 Monitoring jamur daun"
-    );
+    type:"Pemupukan",
 
-  }
+    date:
+      fertilizing
+        .toISOString()
+        .split("T")[0],
 
-  // ======================
-  // TANAMAN PRODUKTIF
-  // ======================
+    done:false
 
-  if(data.age >= 36){
-
-    result.push(
-      "☕ Monitoring pembentukan buah"
-    );
-
-    result.push(
-      "✂️ Pemangkasan produksi"
-    );
-
-    result.push(
-      "🧪 Pemupukan produksi"
-    );
-
-  }
+  });
 
   // ======================
-  // MUSIM HUJAN
+  // PRUNING
   // ======================
 
-  if(data.season === "Musim Hujan"){
+  const pruning =
+    new Date(today);
 
-    result.push(
-      "🌧️ Kurangi pemupukan saat hujan deras"
-    );
+  pruning.setDate(
+    pruning.getDate() + 14
+  );
 
-    result.push(
-      "🦠 Waspadai karat daun dan jamur"
-    );
+  schedules.push({
 
-  }
+    type:"Pruning",
 
-  // ======================
-  // MUSIM KEMARAU
-  // ======================
+    date:
+      pruning
+        .toISOString()
+        .split("T")[0],
 
-  if(data.season === "Musim Kemarau"){
+    done:false
 
-    result.push(
-      "💧 Gunakan mulsa untuk menjaga kelembapan"
-    );
-
-    result.push(
-      "🌱 Prioritaskan penyiraman bibit"
-    );
-
-  }
+  });
 
   // ======================
-  // ARABIKA
+  // HAMA
   // ======================
 
-  if(data.coffeeType === "Arabika"){
+  const pest =
+    new Date(today);
 
-    result.push(
-      "⛰️ Arabika optimal pada suhu dingin dan lembap"
-    );
+  pest.setDate(
+    pest.getDate() + 5
+  );
 
-  }
+  schedules.push({
+
+    type:"Monitoring Hama",
+
+    date:
+      pest
+        .toISOString()
+        .split("T")[0],
+
+    done:false
+
+  });
 
   // ======================
-  // ROBUSTA
+  // PENYIRAMAN
   // ======================
 
-  if(data.coffeeType === "Robusta"){
+  const watering =
+    new Date(today);
 
-    result.push(
-      "☀️ Robusta lebih tahan suhu panas"
-    );
+  watering.setDate(
+    watering.getDate() + 2
+  );
 
-  }
+  schedules.push({
 
-  return result;
+    type:"Penyiraman",
+
+    date:
+      watering
+        .toISOString()
+        .split("T")[0],
+
+    done:false
+
+  });
+
+  return schedules;
 }

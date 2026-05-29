@@ -2,23 +2,42 @@
 <html lang="id">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Talaga Hangsa - Coffee Farm AI</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="style.css">
+  <title>
+    Talaga Hangsa - Coffee Farm AI
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
 
 <body>
 
 <div class="container">
 
+  <!-- HEADER -->
+
   <div class="header">
 
-    <img src="logo.png" class="logo">
+    <img
+      src="./logo.png"
+      class="logo"
+      alt="Talaga Hangsa Logo"
+    >
 
-    <h1>Coffee Farm AI</h1>
+    <h1>
+      Coffee Farm AI
+    </h1>
 
     <p>
       Smart Coffee Farm Management System
@@ -26,62 +45,121 @@
 
   </div>
 
+  <!-- FORM -->
+
   <div class="card">
 
-    <h2>🌱 Tambah Kebun</h2>
+    <h2>
+      🌱 Tambah Kebun
+    </h2>
 
     <div class="grid">
 
-      <input id="farmName" placeholder="Nama Kebun">
+      <input
+        id="farmName"
+        placeholder="Nama Kebun"
+      >
 
       <select id="coffeeType">
-        <option>Arabika</option>
-        <option>Robusta</option>
-        <option>Liberika</option>
+
+        <option>
+          Arabika
+        </option>
+
+        <option>
+          Robusta
+        </option>
+
+        <option>
+          Liberika
+        </option>
+
       </select>
 
-      <input id="altitude" type="number" placeholder="Ketinggian mdpl">
+      <input
+        id="altitude"
+        type="number"
+        placeholder="Ketinggian mdpl"
+      >
 
-      <input id="farmAge" type="number" placeholder="Umur tanaman (bulan)">
+      <input
+        id="treeCount"
+        type="number"
+        placeholder="Jumlah pohon"
+      >
 
-      <input id="treeCount" type="number" placeholder="Jumlah pohon">
+      <!-- TANGGAL TANAM -->
+
+      <input
+        id="plantingDate"
+        type="date"
+      >
 
       <select id="fertilizer">
-        <option>Organik</option>
-        <option>Kimia</option>
-        <option>Kombinasi</option>
+
+        <option>
+          Organik
+        </option>
+
+        <option>
+          Kimia
+        </option>
+
+        <option>
+          Kombinasi
+        </option>
+
       </select>
 
       <select id="season">
-        <option>Musim Hujan</option>
-        <option>Musim Kemarau</option>
+
+        <option>
+          Musim Hujan
+        </option>
+
+        <option>
+          Musim Kemarau
+        </option>
+
       </select>
 
     </div>
 
-    <button onclick="saveFarm()">
+    <button
+      class="save-btn"
+      onclick="saveFarm()"
+    >
       Simpan Kebun
     </button>
 
   </div>
+
+  <!-- DASHBOARD -->
 
   <div id="dashboard"></div>
 
 </div>
 
 <!-- FIREBASE -->
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<!-- MODULES -->
+<!-- APP -->
+
 <script src="firebase.js"></script>
+
+<script src="modules/ai.js"></script>
+
 <script src="modules/schedule.js"></script>
+
 <script src="modules/reminders.js"></script>
+
 <script src="modules/dashboard.js"></script>
+
 <script src="modules/farms.js"></script>
 
-<!-- APP -->
 <script src="app.js"></script>
 
 </body>

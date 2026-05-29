@@ -11,6 +11,13 @@ async function loadDashboard(){
     const data =
       doc.data();
 
+    // ======================
+    // DEFAULT SCHEDULE
+    // ======================
+
+    const schedules =
+      data.schedules || [];
+
     html += `
 
     <div class="farm-card">
@@ -20,18 +27,18 @@ async function loadDashboard(){
         <div>
 
           <div class="farm-title">
-            🌿 ${data.name}
+            🌿 ${data.name || '-'}
           </div>
 
           <div class="farm-subtitle">
-            ${data.coffeeType}
+            ${data.coffeeType || '-'}
           </div>
 
         </div>
 
         <div class="farm-badge">
 
-          ${data.age} bulan
+          ${data.age || 0} bulan
 
         </div>
 
@@ -48,7 +55,7 @@ async function loadDashboard(){
           </span>
 
           <b>
-            ${data.altitude} mdpl
+            ${data.altitude || 0} mdpl
           </b>
 
         </div>
@@ -60,7 +67,7 @@ async function loadDashboard(){
           </span>
 
           <b>
-            ${data.treeCount}
+            ${data.treeCount || 0}
           </b>
 
         </div>
@@ -72,7 +79,7 @@ async function loadDashboard(){
           </span>
 
           <b>
-            ${data.season}
+            ${data.season || '-'}
           </b>
 
         </div>
@@ -89,10 +96,12 @@ async function loadDashboard(){
 
         <ul>
 
-          ${getAIRecommendation(data)
+          ${
+            getAIRecommendation(data)
             .map(item =>
               `<li>${item}</li>`
-            ).join("")}
+            ).join("")
+          }
 
         </ul>
 
@@ -108,16 +117,23 @@ async function loadDashboard(){
 
         <div class="task-list">
 
-          ${data.schedules
-            .map((item,index)=>{
+          ${
+            schedules.length > 0
+
+            ?
+
+            schedules.map((item,index)=>{
 
               const overdue =
+
                 (
                   new Date(item.date)
                   <
                   new Date()
                 )
+
                 &&
+
                 !item.done;
 
               return `
@@ -159,16 +175,19 @@ async function loadDashboard(){
 
                 ${
                   overdue
+
                   ?
+
                   `
                   <div class="warning">
-
                     🚨 Jadwal terlewat
-
                   </div>
                   `
+
                   :
+
                   ''
+
                 }
 
               </div>
@@ -176,6 +195,14 @@ async function loadDashboard(){
               `;
 
             }).join("")
+
+            :
+
+            `
+            <div class="warning">
+              Belum ada jadwal
+            </div>
+            `
           }
 
         </div>

@@ -3,22 +3,16 @@ async function loadDashboard(){
   const snap =
     await db.collection("farms").get();
 
-  let html = `
-    <div class="dashboard-grid">
-  `;
+  let html =
+    `<div class="dashboard-grid">`;
 
   snap.forEach(doc => {
 
-    const data = doc.data();
+    const data =
+      doc.data();
 
-    const tasks = data.tasks || {
-
-      fertilizing:false,
-      pruning:false,
-      pest:false,
-      watering:false
-
-    };
+    const tasks =
+      data.tasks || {};
 
     html += `
 
@@ -51,23 +45,51 @@ async function loadDashboard(){
       <div class="info-list">
 
         <div class="info-item">
-          <span>⛰️ Ketinggian</span>
-          <b>${data.altitude} mdpl</b>
+
+          <span>
+            ⛰️ Ketinggian
+          </span>
+
+          <b>
+            ${data.altitude} mdpl
+          </b>
+
         </div>
 
         <div class="info-item">
-          <span>🌱 Jumlah Pohon</span>
-          <b>${data.treeCount}</b>
+
+          <span>
+            🌱 Jumlah Pohon
+          </span>
+
+          <b>
+            ${data.treeCount}
+          </b>
+
         </div>
 
         <div class="info-item">
-          <span>🧪 Pupuk</span>
-          <b>${data.fertilizer}</b>
+
+          <span>
+            🌦️ Musim
+          </span>
+
+          <b>
+            ${data.season}
+          </b>
+
         </div>
 
         <div class="info-item">
-          <span>🌦️ Musim</span>
-          <b>${data.season}</b>
+
+          <span>
+            🧪 Pupuk
+          </span>
+
+          <b>
+            ${data.fertilizer}
+          </b>
+
         </div>
 
       </div>
@@ -91,12 +113,12 @@ async function loadDashboard(){
 
       </div>
 
-      <!-- AUTO SCHEDULE -->
+      <!-- SCHEDULE -->
 
       <div class="schedule-box">
 
         <h3>
-          📅 Jadwal Perawatan Otomatis
+          📅 Jadwal Perawatan
         </h3>
 
         <ul>
@@ -115,7 +137,7 @@ async function loadDashboard(){
       <div class="schedule-box">
 
         <h3>
-          ✅ Checklist Pekerjaan
+          ✅ Checklist
         </h3>
 
         <div class="task-list">
@@ -124,7 +146,9 @@ async function loadDashboard(){
 
             <input
               type="checkbox"
+
               ${tasks.fertilizing ? "checked" : ""}
+
               onchange="
                 updateTask(
                   '${doc.id}',
@@ -142,7 +166,9 @@ async function loadDashboard(){
 
             <input
               type="checkbox"
+
               ${tasks.pruning ? "checked" : ""}
+
               onchange="
                 updateTask(
                   '${doc.id}',
@@ -160,7 +186,9 @@ async function loadDashboard(){
 
             <input
               type="checkbox"
+
               ${tasks.pest ? "checked" : ""}
+
               onchange="
                 updateTask(
                   '${doc.id}',
@@ -174,34 +202,9 @@ async function loadDashboard(){
 
           </label>
 
-          <label class="task-item">
-
-            <input
-              type="checkbox"
-              ${tasks.watering ? "checked" : ""}
-              onchange="
-                updateTask(
-                  '${doc.id}',
-                  'watering',
-                  this.checked
-                )
-              "
-            >
-
-            Penyiraman
-
-          </label>
-
         </div>
 
       </div>
-
-      <!-- WARNING -->
-
-      ${getReminders(data)
-        .map(item =>
-          `<div class="warning">${item}</div>`
-        ).join("")}
 
       <!-- ACTION -->
 
